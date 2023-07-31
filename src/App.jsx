@@ -3,7 +3,7 @@ import './App.css'
 import Memorize from './components/Memorize/Memorize';
 
 function App() {
-  const [difficulty, setDifficulty] = useState('easy');
+  const [difficulty, setDifficulty] = useState('medium');
   const [isInGame, setIsInGame] = useState(false);
   const [images, setImages] = useState([]);
 

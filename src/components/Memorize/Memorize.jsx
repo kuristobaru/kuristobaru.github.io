@@ -23,6 +23,10 @@ const Memorize = ({difficulty, handleBack, images}) => {
         }
     }, [choiceOne, choiceTwo]);
 
+    useEffect(() => {
+        shuffleCards()
+    }, []);
+
     const handleChoice = (card) => {
         choiceOne ? setChoiceTwo(card) : setChoiceOne(card)
     }
