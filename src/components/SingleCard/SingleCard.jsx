@@ -15,7 +15,7 @@ export const SingleCard = ({card, handleChoice}) => {
         onClick={handleClick}
       />
       <div 
-        className='bg-indigo-950 rounded-2xl 
+        className='bg-purple-700 rounded-2xl 
                     border-2 
                   border-white' 
         style={{objectFit:'cover'}}
