@@ -52,6 +52,9 @@ const Memorize = ({difficulty, handleBack, images}) => {
         const cardWithFlag = images.map(src => ({src, matched: false}))
         const mixingCards = [...cardWithFlag, ...cardWithFlag].sort(() => 0.5 - Math.random()).map((card) => ({...card, id: Math.random()}))
         setCards(mixingCards)
+        setTries(0)
+        setMatchCounter(0)
+        setWrongCounter(0)
     }
 
     const newTry = () => {

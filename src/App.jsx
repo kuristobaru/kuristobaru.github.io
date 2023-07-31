@@ -24,9 +24,8 @@ function App() {
             setImages(data.entries.map(item => item.fields.image.url))
           }
         })
-        setName(null)
         setNeedName(false)
-  }, [difficulty]);
+  }, [difficulty, name]);
 
   const handleBack = () => {
     setIsInGame(false)
