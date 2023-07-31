@@ -14,14 +14,21 @@ export const SingleCard = ({card, handleChoice}) => {
         style={{height:120, width:120, objectFit:'cover'}} 
         onClick={handleClick}
       />
-      <img 
+      <div 
+        className='bg-indigo-950 rounded-2xl 
+                    border-2 
+                  border-white' 
+        style={{objectFit:'cover'}}
+        onClick={handleClick}
+        />
+      {/* <img 
         src='../public/img/cover.png' 
         className='rounded-2xl 
                    border-2 
                    border-white' 
         style={{height:120, width:120, objectFit:'cover'}}
         onClick={handleClick}
-      />
+      /> */}
     </>
   )
 }
