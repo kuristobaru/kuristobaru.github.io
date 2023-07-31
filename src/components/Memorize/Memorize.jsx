@@ -68,16 +68,16 @@ const Memorize = ({difficulty, handleBack, images}) => {
         <div className='memorize-comp'>
             <div className='container mx-auto'>
                 <div className='grid grid-rows-3 mt-10 gap-5'>
-                    <div className='grid grid-cols-12'>
-                        <button className='text-xl
+                    <div className='grid grid-cols-5'>
+                        <button className='text-l
+                            sm:col-span-3 col-start-1
+                            xl:col-span-2
                             font-bold
                             bg-transparent
                             hover:bg-violet-700 transition ease-in-out duration-300
                             text-white 
                             text-center 
                             border-2
-                            sm: col-span-4 col-start-4
-                            xl: col-span-6
                             rounded-full
                             border-sky-950'
                             onClick={handleBack}>
@@ -85,16 +85,16 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         </button>
                     </div>
                     <div className='grid grid-cols-8'>
-                        <button className='text-xl 
+                        <button className='text-l 
                             font-bold
                             bg-transparent
                             hover:bg-violet-700 transition ease-in-out duration-300
                             text-white
                             text-center 
                             border-2
-                            sm: col-span-6
+                            sm:col-span-3
+                            xl:col-span-3 col-start-4
                             col-span-2
-                            col-start-2
                             rounded-full
                             border-sky-500'
                             onClick={() => shuffleCards()}>
@@ -108,9 +108,10 @@ const Memorize = ({difficulty, handleBack, images}) => {
                 <div className='grid
                                 gap-5
                                 mt-10
-                                sm:grid-cols-5
+                                min-[320px]:grid-cols-4
+                                md:grid-cols-5
                                 xl:grid-cols-8
-                                p-10
+                                p-5
                 '>
                         {cards?.map((card) => {
                             return <SingleCard 
