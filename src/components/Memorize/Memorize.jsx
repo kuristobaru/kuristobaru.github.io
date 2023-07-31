@@ -8,17 +8,20 @@ const Memorize = ({difficulty, handleBack, images}) => {
     const [isLoading, setIsLoading] = useState(false);
     const [choiceOne, setChoiceOne] = useState(null);
     const [choiceTwo, setChoiceTwo] = useState(null);
-    const [turns, setTurns] = useState(0);
     const [tries, setTries] = useState(0);
+    const [disabled, setDisabled] = useState(false);
+    const [matchCounter, setMatchCounter] = useState(0);
+    const [wrongCounter, setWrongCounter] = useState(0);
 
     useEffect(() => {
         if(choiceOne && choiceTwo){
-            if (choiceOne === choiceTwo){
+            setDisabled(true)
+            if (choiceOne.src === choiceTwo.src){
+                setMatchCounter(prev => prev+1)
                 setCards(prevCards => {
                     return prevCards.map(card => {
-                        if (card.src === choiceOne){
-                                card.matched = true
-                                return card
+                        if (card.src === choiceOne.src){
+                                return {...card, matched: true}
                         }else{
                             return card
                         }
@@ -26,8 +29,8 @@ const Memorize = ({difficulty, handleBack, images}) => {
                 })
                 newTry()
             }else{
-                console.log('THOSE CARDS NOT MATCH')
-                newTry()    
+                setWrongCounter(prev => prev +1)
+                setTimeout(() => newTry(), 1000)
             }
         }
     }, [choiceOne, choiceTwo]);
@@ -45,22 +48,21 @@ const Memorize = ({difficulty, handleBack, images}) => {
     const shuffleCards = () => {
         //adding field matched into every img url & setting to false
         const cardWithFlag = images.map(src => ({src, matched: false}))
-
         const mixingCards = [...cardWithFlag, ...cardWithFlag].sort(() => 0.5 - Math.random()).map((card) => ({...card, id: Math.random()}))
         setCards(mixingCards)
-        setTurns(0)
     }
 
     const newTry = () => {
         setChoiceOne(null)
         setChoiceTwo(null)
         setTries(prevTry => prevTry + 1)
+        setDisabled(false)
     }
 
     return (
         <div className='memorize-comp'>
             <div className='container mx-auto bg-cover'>
-                <div className='grid grid-rows-4 mt-10'>
+                <div className='grid grid-rows-3 mt-10'>
                     <div className='grid grid-cols-12 gap-8 content-center'>
                         <button className='text-xl
                             font-bold
@@ -93,22 +95,29 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         </button>
                     </div>
                 </div>
-                {/* {mixingCards ?
-                    <div className='grid grid-cols-1 text-white text-center text-4xl'>
-                        Cargando...
-                    </div>
-                    : */}
-                    <div className='grid grid-cols-10 gap-5'>
-                        {cards?.map((img) => {
+                <div className='grid grid-cols-10 gap-5'>
+                        {cards?.map((card) => {
                             return <SingleCard 
-                                        key={img.id}
-                                        card={img.src}
+                                        key={card.id}
+                                        card={card}
                                         handleChoice={handleChoice}
-                                        flipped={img === choiceOne || img === choiceTwo || img.matched}
+                                        flipped={card === choiceOne || card === choiceTwo || card.matched}
+                                        disabled={disabled}
                                     />
                         })}
+                </div>
+                <div className='grid grid-cols-3 mt-10'>
+                    <div className='text-lime-500 text-2xl text-center'>
+                        Matches: {matchCounter}
                     </div>
-                {/* } */}
+                    <div className='text-red-700 text-2xl text-center'>
+                        Wrongs: {wrongCounter}
+                    </div>
+                    <div className='text-white text-2xl text-center'>
+                        Tries: {tries}
+                    </div>
+                </div>
+                
             </div>
         </div>
     )
