@@ -6,6 +6,8 @@ function App() {
   const [difficulty, setDifficulty] = useState('medium');
   const [isInGame, setIsInGame] = useState(false);
   const [images, setImages] = useState([]);
+  const [name, setName] = useState(window.localStorage.getItem("text"));
+  const [needName, setNeedName] = useState(false);
 
   useEffect(() => {
     const promise = fetch("https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=20")
@@ -21,10 +23,29 @@ function App() {
             setImages(data.entries.map(item => item.fields.image.url))
           }
         })
+        setName(null)
+        setNeedName(false)
   }, [difficulty]);
 
   const handleBack = () => {
     setIsInGame(false)
+  }
+
+  const setLocalStorage = (value) => {
+    try {
+      setName(value)
+      window.localStorage.setItem("text", value)
+    } catch (error){
+      console.error(error)
+    }
+  }
+
+  const handlePlayBtn = () => {
+    if(name){
+      setIsInGame(true)
+    }else{
+      setNeedName(true) 
+    }
   }
 
   return (
@@ -46,7 +67,7 @@ function App() {
             <div>
             </div>
             <div className='text-center'>
-              <button onClick={() => setIsInGame(true)} className='text-4xl 
+              <button onClick={() => handlePlayBtn()} className='text-4xl 
                 font-bold
                 bg-transparent
                 animate-pulse
@@ -82,6 +103,22 @@ function App() {
               <button onClick={() => setDifficulty('hard')} className='hover:text-violet-600 transition ease-in-out duration-500'>
                 Hard
               </button>
+            </div>
+          </div>
+          <div className='grid grid-rows-2 mt-10'>
+            <div className='grid grid-cols-8'>
+              <input className="col-span-2 col-start-4 p-3 rounded-2xl" 
+                    placeholder='Please enter your name here' 
+                    onChange={(e) => setLocalStorage(e.target.value)} 
+                    value={name}
+              />
+            </div>
+            <div className='grid grid-cols-8'>
+              {needName &&
+                <div className='col-span-2 col-start-4 text-white text-center mt-5'>
+                  You must enter your name first!
+                </div>
+              }
             </div>
           </div>
         </div>
