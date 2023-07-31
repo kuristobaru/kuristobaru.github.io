@@ -21,7 +21,7 @@ export const SingleCard = ({card, handleChoice, flipped, disabled}) => {
         />
         :
         <img 
-          src='../dist/img/cover.png' 
+          src="https://i.ibb.co/b5x3dbz/cover.png"
           className='rounded-2xl 
                     border-2 
                     border-white' 
