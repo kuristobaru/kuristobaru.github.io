@@ -76,7 +76,8 @@ const Memorize = ({difficulty, handleBack, images}) => {
                             text-white 
                             text-center 
                             border-2
-                            col-span-2
+                            sm: col-span-4 col-start-4
+                            xl: col-span-6
                             rounded-full
                             border-sky-950'
                             onClick={handleBack}>
@@ -91,8 +92,9 @@ const Memorize = ({difficulty, handleBack, images}) => {
                             text-white
                             text-center 
                             border-2
+                            sm: col-span-6
                             col-span-2
-                            col-start-4
+                            col-start-2
                             rounded-full
                             border-sky-500'
                             onClick={() => shuffleCards()}>
@@ -103,7 +105,13 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         {playerName+"'s Game"}
                     </div>
                 </div>
-                <div className='grid grid-cols-10 gap-5 mt-10'>
+                <div className='grid
+                                gap-5
+                                mt-10
+                                sm:grid-cols-5
+                                xl:grid-cols-8
+                                p-10
+                '>
                         {cards?.map((card) => {
                             return <SingleCard 
                                         key={card.id}
