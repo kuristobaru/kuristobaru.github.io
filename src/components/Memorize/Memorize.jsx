@@ -13,8 +13,17 @@ const Memorize = ({difficulty, handleBack, images}) => {
 
     useEffect(() => {
         if(choiceOne && choiceTwo){
-            if (choiceOne.card === choiceTwo.card){
-                console.log('YOU GET A MATCH')
+            if (choiceOne === choiceTwo){
+                setCards(prevCards => {
+                    return prevCards.map(card => {
+                        if (card.src === choiceOne){
+                                card.matched = true
+                                return card
+                        }else{
+                            return card
+                        }
+                    })
+                })
                 newTry()
             }else{
                 console.log('THOSE CARDS NOT MATCH')
@@ -23,7 +32,9 @@ const Memorize = ({difficulty, handleBack, images}) => {
         }
     }, [choiceOne, choiceTwo]);
 
+    console.log(cards)
     useEffect(() => {
+        //shuffleling cards
         shuffleCards()
     }, []);
 
@@ -32,7 +43,10 @@ const Memorize = ({difficulty, handleBack, images}) => {
     }
 
     const shuffleCards = () => {
-        const mixingCards = [...images, ...images].sort(() => 0.5 - Math.random()).map((card) => ({card, id: Math.random()}))
+        //adding field matched into every img url & setting to false
+        const cardWithFlag = images.map(src => ({src, matched: false}))
+
+        const mixingCards = [...cardWithFlag, ...cardWithFlag].sort(() => 0.5 - Math.random()).map((card) => ({...card, id: Math.random()}))
         setCards(mixingCards)
         setTurns(0)
     }
@@ -88,8 +102,9 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         {cards?.map((img) => {
                             return <SingleCard 
                                         key={img.id}
-                                        card={img}
+                                        card={img.src}
                                         handleChoice={handleChoice}
+                                        flipped={img === choiceOne || img === choiceTwo || img.matched}
                                     />
                         })}
                     </div>
