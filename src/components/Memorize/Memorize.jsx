@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { SingleCard } from '../SingleCard/SingleCard';
+import useLocalStorage from '../../../helpers/useLocalStorage';
 // import './Memorize.scss'
 
 const Memorize = ({difficulty, handleBack, images}) => {
@@ -12,6 +13,7 @@ const Memorize = ({difficulty, handleBack, images}) => {
     const [disabled, setDisabled] = useState(false);
     const [matchCounter, setMatchCounter] = useState(0);
     const [wrongCounter, setWrongCounter] = useState(0);
+   const [playerName, setPlayerName] = useLocalStorage('name', '');
 
     useEffect(() => {
         if(choiceOne && choiceTwo){
@@ -61,9 +63,9 @@ const Memorize = ({difficulty, handleBack, images}) => {
 
     return (
         <div className='memorize-comp'>
-            <div className='container mx-auto bg-cover'>
-                <div className='grid grid-rows-3 mt-10'>
-                    <div className='grid grid-cols-12 gap-8 content-center'>
+            <div className='container mx-auto'>
+                <div className='grid grid-rows-3 mt-10 gap-5'>
+                    <div className='grid grid-cols-12'>
                         <button className='text-xl
                             font-bold
                             bg-transparent
@@ -71,14 +73,14 @@ const Memorize = ({difficulty, handleBack, images}) => {
                             text-white 
                             text-center 
                             border-2
-                            col-start-5
                             col-span-2
                             rounded-full
-                            border-sky-500
-                            px-10'
+                            border-sky-950'
                             onClick={handleBack}>
                                 Go Back
                         </button>
+                    </div>
+                    <div className='grid grid-cols-8'>
                         <button className='text-xl 
                             font-bold
                             bg-transparent
@@ -86,16 +88,19 @@ const Memorize = ({difficulty, handleBack, images}) => {
                             text-white
                             text-center 
                             border-2
-                            col-span-3
+                            col-span-2
+                            col-start-4
                             rounded-full
-                            border-sky-500
-                            px-10'
+                            border-sky-500'
                             onClick={() => shuffleCards()}>
                                 Start again
                         </button>
                     </div>
+                    <div className='text-white text-center text-2xl'>
+                        {playerName+"'s Game"}
+                    </div>
                 </div>
-                <div className='grid grid-cols-10 gap-5'>
+                <div className='grid grid-cols-10 gap-5 mt-10'>
                         {cards?.map((card) => {
                             return <SingleCard 
                                         key={card.id}
@@ -117,7 +122,6 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         Tries: {tries}
                     </div>
                 </div>
-                
             </div>
         </div>
     )

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import './App.css'
 import Memorize from './components/Memorize/Memorize';
+import useLocalStorage from '../helpers/useLocalStorage';
 
 function App() {
   const [difficulty, setDifficulty] = useState('medium');
   const [isInGame, setIsInGame] = useState(false);
   const [images, setImages] = useState([]);
-  const [name, setName] = useState(window.localStorage.getItem("text"));
+  const [name, setName] = useLocalStorage('name', '')
   const [needName, setNeedName] = useState(false);
 
   useEffect(() => {
@@ -29,15 +30,6 @@ function App() {
 
   const handleBack = () => {
     setIsInGame(false)
-  }
-
-  const setLocalStorage = (value) => {
-    try {
-      setName(value)
-      window.localStorage.setItem("text", value)
-    } catch (error){
-      console.error(error)
-    }
   }
 
   const handlePlayBtn = () => {
@@ -109,7 +101,7 @@ function App() {
             <div className='grid grid-cols-8'>
               <input className="col-span-2 col-start-4 p-3 rounded-2xl" 
                     placeholder='Please enter your name here' 
-                    onChange={(e) => setLocalStorage(e.target.value)} 
+                    onChange={(e) => setName(e.target.value)} 
                     value={name}
               />
             </div>
