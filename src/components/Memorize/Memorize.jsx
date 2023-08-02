@@ -71,7 +71,7 @@ const Memorize = ({difficulty, handleBack, images}) => {
                     <div className='grid grid-cols-5'>
                         <button className='text-l
                             sm:col-span-3 col-start-1
-                            xl:col-span-2
+                            xl:col-span-1
                             font-bold
                             bg-transparent
                             hover:bg-violet-700 transition ease-in-out duration-300
@@ -84,8 +84,8 @@ const Memorize = ({difficulty, handleBack, images}) => {
                                 Go Back
                         </button>
                     </div>
-                    <div className='grid grid-cols-8'>
-                        <button className='text-l 
+                    <div className='grid grid-cols-5'>
+                        <button className='text-l
                             font-bold
                             bg-transparent
                             hover:bg-violet-700 transition ease-in-out duration-300
@@ -93,7 +93,7 @@ const Memorize = ({difficulty, handleBack, images}) => {
                             text-center 
                             border-2
                             sm:col-span-3
-                            xl:col-span-3 col-start-4
+                            xl:col-span-3 col-start-2
                             col-span-2
                             rounded-full
                             border-sky-500'
