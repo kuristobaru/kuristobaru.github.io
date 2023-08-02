@@ -118,8 +118,8 @@ function App() {
 
       {/* global scope */}
       <div className='grid grid-cols-12 p-10'>
-        <audio controls loop autoplay className='col-span-2 col-start-6'>
-          <source src="src\assets\soundmemorize.mp3" type="audio/mpeg" />
+        <audio controls loop autoplay autobuffer className='col-span-2 col-start-6'>
+          <source src="assets\soundmemorize.mp3" type="audio/mpeg" />
           Tu navegador no soporta el elemento de audio.
         </audio>
       </div>
