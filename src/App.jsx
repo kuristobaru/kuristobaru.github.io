@@ -103,7 +103,7 @@ function App() {
           <div className='grid grid-rows-2 mt-10'>
             <div className='grid place-content-center'>
                 {needName &&
-                  <div className='col-span-2 col-start-4 text-xl text-center animate-bounce'>
+                  <div className='col-span-2 col-start-4 text-xl text-center text-white animate-bounce'>
                     You must enter your name first!
                   </div>
                 }
