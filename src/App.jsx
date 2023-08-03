@@ -68,6 +68,7 @@ function App() {
                 text-center 
                 border-2 
                 rounded-full
+                shadow-xl shadow-cyan-500/50
                 border-sky-500 
                 '
               >
@@ -102,14 +103,14 @@ function App() {
           <div className='grid grid-rows-2 mt-10'>
             <div className='grid place-content-center'>
                 {needName &&
-                  <div className='col-span-2 col-start-4 text-white text-center'>
+                  <div className='col-span-2 col-start-4 text-xl text-center animate-bounce'>
                     You must enter your name first!
                   </div>
                 }
             </div>
             <div className='grid place-content-center'>
-              <input className="pl-20 pr-20 pt-2 pb-2 rounded-2xl" 
-                    placeholder='Please enter your name here' 
+              <input className="pl-20 pr-20 pt-2 pb-2 rounded-2xl caret-pink-500" 
+                    placeholder='Please enter your name' 
                     onChange={(e) => setName(e.target.value)} 
                     value={name}
               />
@@ -121,11 +122,13 @@ function App() {
       }
 
       {/* global scope */}
-      <div className='grid place-content-center'>
-        <audio controls loop autoplay className='mt-10'>
-          <source src="https://raw.githubusercontent.com/kuristobaru/kuristobaru.github.io/main/src/assets/soundmemorize.mp3" type="audio/mpeg" />
-          Tu navegador no soporta el elemento de audio.
-        </audio>
+      <div className='grid grid-rows-1 mb-10'>
+        <div className='grid place-content-center'>
+          <audio controls loop autoplay className='mt-10'>
+            <source src="https://raw.githubusercontent.com/kuristobaru/kuristobaru.github.io/main/src/assets/soundmemorize.mp3" type="audio/mpeg" />
+            Tu navegador no soporta el elemento de audio.
+          </audio>
+        </div>
       </div>
     </div>
   )
