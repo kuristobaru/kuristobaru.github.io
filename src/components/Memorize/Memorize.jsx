@@ -84,17 +84,17 @@ const Memorize = ({difficulty, handleBack, images}) => {
                                 Go Back
                         </button>
                     </div>
-                    <div className='grid grid-cols-5'>
+                    <div className='grid grid-cols-6'>
                         <button className='text-l
                             font-bold
                             bg-transparent
                             hover:bg-violet-700 transition ease-in-out duration-300
                             text-white
-                            text-center 
+                            text-center
                             border-2
-                            sm:col-span-3
-                            xl:col-span-3 col-start-2
-                            col-span-2
+                            min-[320px]:col-span-2
+                            min-[320px]:col-start-3
+                            xl:col-span-2 xl:col-start-3
                             rounded-full
                             border-sky-500'
                             onClick={() => shuffleCards()}>
