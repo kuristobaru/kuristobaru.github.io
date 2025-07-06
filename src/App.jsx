@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css'
 import Memorize from './components/Memorize/Memorize';
 import useLocalStorage from '../helpers/useLocalStorage';
@@ -9,6 +9,9 @@ function App() {
   const [images, setImages] = useState([]);
   const [name, setName] = useLocalStorage('name', '')
   const [needName, setNeedName] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef(null);
+  const [pageTransition, setPageTransition] = useState('');
 
   useEffect(() => {
     const promise = fetch("https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=20")
@@ -17,9 +20,9 @@ function App() {
         })
         .then(data => {
           if(difficulty === 'easy'){
-            setImages(data.entries.splice(0,10).map(item => item.fields.image.url))
+            setImages(data.entries.slice(0,10).map(item => item.fields.image.url))
           }else if (difficulty === 'medium'){
-            setImages(data.entries.splice(0,15).map(item => item.fields.image.url))
+            setImages(data.entries.slice(0,15).map(item => item.fields.image.url))
           }else{
             setImages(data.entries.map(item => item.fields.image.url))
           }
@@ -27,24 +30,65 @@ function App() {
         setNeedName(false)
   }, [difficulty, name]);
 
+  // Asegura que la música empiece desde el principio cada vez que se monta el componente
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
+  }, []);
+
+  // Maneja el mute/unmute global
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
   const handleBack = () => {
-    setIsInGame(false)
+    setPageTransition('fade-page-exit');
+    setTimeout(() => {
+      setIsInGame(false);
+      setPageTransition('fade-page-enter');
+      setTimeout(() => setPageTransition('fade-page-active'), 30);
+    }, 500);
   }
 
   const handlePlayBtn = () => {
     if(name){
-      setIsInGame(true)
+      setPageTransition('fade-page-exit');
+      setTimeout(() => {
+        setIsInGame(true);
+        setPageTransition('fade-page-enter');
+        setTimeout(() => setPageTransition('fade-page-active'), 30);
+      }, 500);
     }else{
       setNeedName(true) 
     }
   }
 
+  // Inicializar transición al cargar
+  useEffect(() => {
+    setPageTransition('fade-page-enter');
+    setTimeout(() => setPageTransition('fade-page-active'), 30);
+  }, [isInGame]);
+
   return (
     <div className='App'>
+      {/* Botón global para mutear/desmutear */}
+      <button
+        onClick={() => setIsMuted((prev) => !prev)}
+        className='fixed top-4 right-4 z-50 bg-violet-700 text-white rounded-full px-4 py-2 shadow-lg hover:bg-violet-900 transition duration-300'
+        aria-label={isMuted ? 'Activar sonido' : 'Silenciar sonido'}
+      >
+        {isMuted ? '🔇 Silenciar' : '🔊 Sonido'}
+      </button>
       {isInGame ?
-        <Memorize difficulty={difficulty} images={images} handleBack={() => handleBack()}/>
+        <div className={`fade-page ${pageTransition}`}>
+          <Memorize difficulty={difficulty} images={images} handleBack={() => handleBack()}/>
+        </div>
         :
-        <div className='container mx-auto bg-cover'>
+        <div className={`fade-page ${pageTransition} container mx-auto bg-cover`}>
           <div className='grid grid-rows-5'>
             <div>
             </div>
@@ -124,7 +168,14 @@ function App() {
       {/* global scope */}
       <div className='grid grid-rows-1 mb-10'>
         <div className='grid place-content-center'>
-          <audio controls loop autoplay className='mt-10'>
+          <audio
+            ref={audioRef}
+            loop
+            autoPlay
+            muted={isMuted}
+            className='mt-10 hidden'
+            onPlay={() => { if (audioRef.current.currentTime === 0) audioRef.current.play(); }}
+          >
             <source src="https://raw.githubusercontent.com/kuristobaru/kuristobaru.github.io/main/src/assets/soundmemorize.mp3" type="audio/mpeg" />
             Tu navegador no soporta el elemento de audio.
           </audio>

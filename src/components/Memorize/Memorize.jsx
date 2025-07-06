@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { SingleCard } from '../SingleCard/SingleCard';
 import useLocalStorage from '../../../helpers/useLocalStorage';
+import confetti from 'canvas-confetti';
 // import './Memorize.scss'
 
 const Memorize = ({difficulty, handleBack, images}) => {
@@ -29,6 +30,27 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         }
                     })
                 })
+                setTimeout(() => {
+                  if (choiceTwo && choiceTwo.id) {
+                    const cardElem = document.querySelector(`[data-card-id='${choiceTwo.id}']`);
+                    if (cardElem) {
+                      const rect = cardElem.getBoundingClientRect();
+                      const x = (rect.left + rect.width / 2) / window.innerWidth;
+                      const y = (rect.top + rect.height / 2) / window.innerHeight;
+                      confetti({
+                        particleCount: 80,
+                        spread: 70,
+                        origin: { x, y }
+                      });
+                    } else {
+                      confetti({
+                        particleCount: 80,
+                        spread: 70,
+                        origin: { y: 0.7 }
+                      });
+                    }
+                  }
+                }, 250);
                 newTry()
             }else{
                 setWrongCounter(prev => prev +1)
@@ -63,6 +85,11 @@ const Memorize = ({difficulty, handleBack, images}) => {
         setTries(prevTry => prevTry + 1)
         setDisabled(false)
     }
+
+    // Determinar columnas según dificultad
+    let gridCols = 3;
+    if (difficulty === 'medium') gridCols = 6;
+    if (difficulty === 'hard') gridCols = 8;
 
     return (
         <div className='memorize-comp'>
@@ -105,23 +132,16 @@ const Memorize = ({difficulty, handleBack, images}) => {
                         {playerName+"'s Game"}
                     </div>
                 </div>
-                <div className='grid
-                                gap-5
-                                mt-10
-                                min-[320px]:grid-cols-4
-                                md:grid-cols-5
-                                xl:grid-cols-8
-                                p-5
-                '>
-                        {cards?.map((card) => {
-                            return <SingleCard 
-                                        key={card.id}
-                                        card={card}
-                                        handleChoice={handleChoice}
-                                        flipped={card === choiceOne || card === choiceTwo || card.matched}
-                                        disabled={disabled}
-                                    />
-                        })}
+                <div className={`grid gap-5 mt-10 p-5 justify-center grid-cols-${gridCols}`}>
+                    {cards?.map((card) => {
+                        return <SingleCard 
+                                    key={card.id}
+                                    card={card}
+                                    handleChoice={handleChoice}
+                                    flipped={card === choiceOne || card === choiceTwo || card.matched}
+                                    disabled={disabled}
+                                />
+                    })}
                 </div>
                 <div className='grid grid-cols-3 mt-10'>
                     <div className='text-lime-500 text-2xl text-center'>
