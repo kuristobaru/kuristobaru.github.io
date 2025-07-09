@@ -9,7 +9,8 @@ function App() {
   const [images, setImages] = useState([]);
   const [name, setName] = useLocalStorage('name', '')
   const [needName, setNeedName] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useLocalStorage('isMuted', false);
+  const [audioPosition, setAudioPosition] = useLocalStorage('audioPosition', 0);
   const audioRef = useRef(null);
   const [pageTransition, setPageTransition] = useState('');
 
@@ -33,10 +34,22 @@ function App() {
   // Asegura que la música empiece desde el principio cada vez que se monta el componente
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.currentTime = 0;
+      audioRef.current.currentTime = audioPosition;
+      audioRef.current.muted = isMuted;
       audioRef.current.play();
     }
   }, []);
+
+  // Guarda la posición del audio cada 5 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (audioRef.current && !audioRef.current.paused) {
+        setAudioPosition(audioRef.current.currentTime);
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [setAudioPosition]);
 
   // Maneja el mute/unmute global
   useEffect(() => {
@@ -83,6 +96,14 @@ function App() {
       >
         {isMuted ? '🔇 Silenciar' : '🔊 Sonido'}
       </button>
+      
+      {/* Mensaje informativo sobre la música */}
+      {audioPosition > 0 && (
+        <div className='fixed top-16 right-4 z-40 bg-green-600 text-white rounded-lg px-3 py-2 text-sm animate-pulse'>
+          🎵 Música restaurada
+        </div>
+      )}
+      
       {isInGame ?
         <div className={`fade-page ${pageTransition}`}>
           <Memorize difficulty={difficulty} images={images} handleBack={() => handleBack()}/>
