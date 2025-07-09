@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import './App.css'
 import Memorize from './components/Memorize/Memorize';
 import useLocalStorage from '../helpers/useLocalStorage';
+import soundmemorize from './assets/soundmemorize.mp3';
 
 function App() {
   const [difficulty, setDifficulty] = useState('medium');
@@ -74,6 +75,10 @@ function App() {
         setIsInGame(true);
         setPageTransition('fade-page-enter');
         setTimeout(() => setPageTransition('fade-page-active'), 30);
+        // Reproducir audio después de interacción
+        if(audioRef.current){
+          audioRef.current.play();
+        }
       }, 500);
     }else{
       setNeedName(true) 
@@ -197,7 +202,7 @@ function App() {
             className='mt-10 hidden'
             onPlay={() => { if (audioRef.current.currentTime === 0) audioRef.current.play(); }}
           >
-            <source src="https://raw.githubusercontent.com/kuristobaru/kuristobaru.github.io/main/src/assets/soundmemorize.mp3" type="audio/mpeg" />
+            <source src={soundmemorize} type="audio/mpeg" />
             Tu navegador no soporta el elemento de audio.
           </audio>
         </div>
