@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css'
 import Memorize from './components/Memorize/Memorize';
 import useLocalStorage from '../helpers/useLocalStorage';
+import soundmemorize from './assets/soundmemorize.mp3';
 
 function App() {
   const [difficulty, setDifficulty] = useState('medium');
@@ -9,6 +10,7 @@ function App() {
   const [images, setImages] = useState([]);
   const [name, setName] = useLocalStorage('name', '')
   const [needName, setNeedName] = useState(false);
+  const audioRef = useRef(null);
 
   useEffect(() => {
     const promise = fetch("https://fed-team.modyo.cloud/api/content/spaces/animals/types/game/entries?per_page=20")
@@ -33,7 +35,11 @@ function App() {
 
   const handlePlayBtn = () => {
     if(name){
-      setIsInGame(true)
+      setIsInGame(true);
+      // Reproducir audio después de interacción
+      if(audioRef.current){
+        audioRef.current.play();
+      }
     }else{
       setNeedName(true) 
     }
@@ -124,8 +130,8 @@ function App() {
       {/* global scope */}
       <div className='grid grid-rows-1 mb-10'>
         <div className='grid place-content-center'>
-          <audio controls loop autoplay className='mt-10'>
-            <source src="https://raw.githubusercontent.com/kuristobaru/kuristobaru.github.io/main/src/assets/soundmemorize.mp3" type="audio/mpeg" />
+          <audio ref={audioRef} loop className='mt-10'>
+            <source src={soundmemorize} type="audio/mpeg" />
             Tu navegador no soporta el elemento de audio.
           </audio>
         </div>
